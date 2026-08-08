@@ -1,12 +1,12 @@
 import pytest
 import uuid
-from httpx import AsyncClient
+from fastapi.testclient import TestClient
 from src.app.main import app, _game_store
 
-@pytest.mark.asyncio
-async def test_create_game_returns_uuid_and_stores_state():
-    async with AsyncClient(app=app, base_url="http://testserver") as client:
-        response = await client.post("/games")
+client = TestClient(app)
+
+def test_create_game_returns_uuid_and_stores_state():
+    response = client.post("/games")
     assert response.status_code == 201
     data = response.json()
     assert "game_id" in data
@@ -22,11 +22,9 @@ async def test_create_game_returns_uuid_and_stores_state():
     assert stored["board"] == []
     assert stored["current_turn"] == "player1"
 
-@pytest.mark.asyncio
-async def test_multiple_game_creations_yield_distinct_ids():
-    async with AsyncClient(app=app, base_url="http://testserver") as client:
-        resp1 = await client.post("/games")
-        resp2 = await client.post("/games")
+def test_multiple_game_creations_yield_distinct_ids():
+    resp1 = client.post("/games")
+    resp2 = client.post("/games")
     id1 = resp1.json()["game_id"]
     id2 = resp2.json()["game_id"]
     assert id1 != id2
