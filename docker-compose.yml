@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    image: ${BACKEND_IMAGE:-battleship-backend}:${DOCKER_TAG:-latest}
+    container_name: battleship_backend
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+    networks:
+      - battleship-net
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    image: ${FRONTEND_IMAGE:-battleship-frontend}:${DOCKER_TAG:-latest}
+    container_name: battleship_frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+    networks:
+      - battleship-net
+
+networks:
+  battleship-net:
+    driver: bridge

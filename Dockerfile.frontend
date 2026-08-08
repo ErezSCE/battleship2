@@ -1,0 +1,37 @@
+# syntax=docker/dockerfile:1
+# Multi-stage Dockerfile for Angular frontend
+
+# ---------- Build stage ----------
+FROM node:18-alpine AS build
+
+# Set working directory
+WORKDIR /app
+
+# Install npm strict SSL config for corporate proxies
+RUN npm config set strict-ssl false
+
+# Copy package files and install dependencies
+COPY package.json package-lock.json ./
+RUN npm ci
+
+# Copy the rest of the source code
+COPY . .
+
+# Build the Angular app for production
+RUN npm run build -- --configuration production
+
+# ---------- Runtime stage ----------
+FROM nginx:alpine AS runtime
+
+# Copy built files from build stage
+COPY --from=build /app/dist /usr/share/nginx/html
+
+# Expose port 80
+EXPOSE 80
+
+# Health check for Nginx
+HEALTHCHECK --interval=30s --timeout=3s \
+  CMD wget -qO- http://localhost || exit 1
+
+# Start Nginx
+CMD ["nginx", "-g", "daemon off;"]
