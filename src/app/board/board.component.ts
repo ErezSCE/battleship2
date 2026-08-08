@@ -14,6 +14,8 @@ import { GameStateService, Board } from '../game-state.service';
 })
 export class BoardComponent implements OnInit, OnDestroy {
 
+  private boardSubscription!: Subscription;
+
   board$!: Observable<Board>;
 
   constructor(private gameState: GameStateService) {}
@@ -23,5 +25,11 @@ export class BoardComponent implements OnInit, OnDestroy {
     this.boardSubscription = this.board$.subscribe(board => {
       console.log('BoardComponent: board updated', board);
     });
+  }
+
+  ngOnDestroy(): void {
+    if (this.boardSubscription) {
+      this.boardSubscription.unsubscribe();
+    }
   }
 }
