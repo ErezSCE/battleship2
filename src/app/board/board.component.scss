@@ -1,0 +1,8 @@
+/* Styles for player board */
+.board { display: grid; grid-template-rows: repeat(10, 30px); }
+.row { display: grid; grid-template-columns: repeat(10, 30px); }
+.cell { border: 1px solid #ccc; }
+.cell.empty { background-color: #fff; }
+.cell.ship { background-color: #777; }
+.cell.hit { background-color: red; }
+.cell.miss { background-color: lightblue; }
