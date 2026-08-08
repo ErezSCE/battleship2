@@ -1,0 +1,5 @@
+<div class="board">
+  <div *ngFor="let row of board$ | async; let y = index" class="row">
+    <div *ngFor="let cell of row; let x = index" class="cell" [ngClass]="cell"></div>
+  </div>
+</div>
