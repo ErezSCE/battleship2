@@ -1,7 +1,7 @@
 # QA Lead — Test Plan
 
 **Agent**: qa-lead  
-**Generated**: 2026-08-08T09:20:29.560Z
+**Generated**: 2026-08-08T10:06:39.888Z
 
 ---
 
@@ -39,14 +39,14 @@
       "acIndex": -1
     },
     {
-      "target": "backend/models/board.py::Board.validate_coordinates",
+      "target": "backend/models/board.py::validate_coordinates",
       "description": "Unit test coordinate validation for out‑of‑bounds and negative values.",
       "framework": "pytest",
       "storyId": "N/A",
       "acIndex": -1
     },
     {
-      "target": "backend/models/ship.py::Ship.calculate_occupied_cells",
+      "target": "backend/models/ship.py::calculate_occupied_cells",
       "description": "Verify that a ship's occupied cells are correctly calculated based on start position, size, and orientation.",
       "framework": "pytest",
       "storyId": "N/A",
