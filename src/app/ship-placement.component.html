@@ -1,0 +1,32 @@
+<div class="ship-placement">
+  <h2>Place Your Ships</h2>
+  <div class="ships-list">
+    <p>Select a ship to place:</p>
+    <ul>
+      <li *ngFor="let ship of shipsToPlace; let i = index"
+          [class.selected]="i === selectedShipIndex"
+          [class.placed]="ship.placed"
+          (click)="selectShip(i)">
+        Size {{ ship.size }} – {{ ship.orientation }}
+      </li>
+    </ul>
+    <button (click)="toggleOrientation()" [disabled]="selectedShipIndex === -1">
+      Toggle Orientation
+    </button>
+  </div>
+
+  <div class="board">
+    <div class="row" *ngFor="let row of board; let y = index">
+      <div class="cell"
+           *ngFor="let cell of row; let x = index"
+           (click)="onCellClick(x, y)"
+           [class.occupied]="isCellOccupied(x, y)">
+        {{ x }},{{ y }}
+      </div>
+    </div>
+  </div>
+
+  <button (click)="submitPlacements().subscribe()" [disabled]="placements.length !== shipsToPlace.length">
+    Submit Placements
+  </button>
+</div>
