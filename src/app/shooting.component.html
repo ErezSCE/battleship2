@@ -1,0 +1,15 @@
+<div class="shooting">
+  <h3>Fire a Shot</h3>
+  <label>
+    X:
+    <input type="number" [(ngModel)]="x" min="0" />
+  </label>
+  <label>
+    Y:
+    <input type="number" [(ngModel)]="y" min="0" />
+  </label>
+  <button (click)="fire()">Fire</button>
+  <div *ngIf="result !== null" class="result">
+    Result: {{ result }}
+  </div>
+</div>

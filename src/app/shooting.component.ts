@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { GameService } from './game.service';
+import { FireShotService } from './services/fire-shot.service';
 
 @Component({
   selector: 'app-shooting',
@@ -7,19 +7,25 @@ import { GameService } from './game.service';
   styleUrls: ['./shooting.component.scss']
 })
 export class ShootingComponent {
+  @Input() shooterId!: string;
   @Input() gameId!: string;
   x: number = 0;
   y: number = 0;
   result: string | null = null;
 
-  constructor(private gameService: GameService) {}
+  constructor(private fireShotService: FireShotService) {}
 
   fire(): void {
+    // Validate coordinates are within board bounds (0-9)
+    if (this.x < 0 || this.x > 9 || this.y < 0 || this.y > 9) {
+      this.result = 'Error: coordinates out of bounds';
+      return;
+    }
     if (!this.gameId) {
       console.error('gameId is required to fire a shot');
       return;
     }
-    this.gameService.fireShot(this.gameId, this.x, this.y).subscribe(
+    this.fireShotService.fireShot(this.gameId, this.shooterId, this.x, this.y).subscribe(
       (res) => {
         // Expect response to contain a result field like "hit", "miss", or "sunk"
         this.result = res?.result ?? JSON.stringify(res);

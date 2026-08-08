@@ -15,8 +15,8 @@ export class GameService {
    * @param y The y coordinate (0-indexed).
    * @returns Observable of the server response.
    */
-  fireShot(gameId: string, x: number, y: number): Observable<any> {
+  fireShot(gameId: string, shooterId: string, x: number, y: number): Observable<any> {
     const url = `/games/${gameId}/shots`;
-    return this.http.post<any>(url, { x, y });
+    return this.http.post<any>(url, { shooter_id: shooterId, target_x: x, target_y: y });
   }
 }
